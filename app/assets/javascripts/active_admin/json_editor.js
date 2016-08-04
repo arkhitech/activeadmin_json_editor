@@ -3,7 +3,6 @@
 
 ;(function(window, $) {
   $(function() {
-
     /**
      * Adds a JSON editor to all :hstore input elements in the DOM that were not already styled.
      */
@@ -13,16 +12,29 @@
         var textarea = $($(wrap).find('textarea'));
         var editor;
         var options = {
-          mode: 'tree',
+	  mode: 'tree', 'text',
           change: function(ev){
-            textarea.text(JSON.stringify(editor.get()));
+            try {
+              var text = JSON.stringify(editor.get());
+              textarea.text(text);
+              $(fieldset).toggleClass('error',false);
+              textarea.text(JSON.stringify(editor.get()));
+            } catch (e) {
+              editor.options.error(e);
+            }
+          },
+          error: function(e){
+            $(fieldset).toggleClass('error',true);
           }
+          //change: function(ev){
+          //  textarea.text(JSON.stringify(editor.get()));
+          //}
         };
 
         editor = new JSONEditor(container, options, JSON.parse(textarea.val()));
       });
     };
-
+	  
     /**
      * Style :hstore inputs when DOM is ready.
      */
