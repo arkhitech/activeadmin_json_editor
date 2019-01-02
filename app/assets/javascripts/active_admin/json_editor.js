@@ -12,7 +12,8 @@
         var textarea = $($(wrap).find('textarea'));
         var editor;
         var options = {
-	  mode: 'tree', 'text',
+          modes: ['tree', 'text'],
+          mode: 'tree',
           change: function(ev){
             try {
               var text = JSON.stringify(editor.get());
